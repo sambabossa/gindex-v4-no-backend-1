@@ -13,6 +13,8 @@ var authConfig = {
       id: "folder_id",
       name: "Glory to Heaven",
       protect_file_link: true,
+      user: "",
+      pass: "",
     }
   ],
   default_gd: 0,
