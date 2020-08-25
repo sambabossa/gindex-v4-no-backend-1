@@ -13,7 +13,7 @@ If you apply a Creative Commons license and a user violates the license conditio
 ![Settings Page](https://github.com/tks18/gindex-v4/blob/dark-mode-0-1/vuejs/go2index/videoPlayer.jpg?raw=true)
 _Site - [Click Here](https://glorytoheaven.tk)_<br>
 Demo Site - [Click Here](https://demo.gthu.workers.dev)<br>
-**Support Group can be Found Here - [Here](https://t.me/joinchat/MXJ4wk5Gs__QFZbvBdd_pg)**<br>
+**Support Group can be Found Here - [Here](https://t.me/joinchat/LVLR1U5Gs_9lmHGNGqpxIw)**<br>
 Any Issues / Help Regarding Setup, Contact Through the telegram Group
 
 #### Complete Site Inspiration from [Aicirou](https://github.com/Aicirou)
