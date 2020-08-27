@@ -113,6 +113,18 @@
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
     export default {
+      metaInfo() {
+        return {
+          title: "Welcome",
+          titleTemplate: (titleChunk) => {
+            if(titleChunk && this.siteName){
+              return titleChunk ? `${titleChunk} | ${this.siteName}` : `${this.siteName}`;
+            } else {
+              return "Loading..."
+            }
+          },
+        }
+      },
         components: {
           Loading,
         },
@@ -135,6 +147,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
         },
         methods: {
           gotoPage(url, cmd) {
+            this.$ga.event({eventCategory: "Page Navigation",eventAction: url+" - "+this.siteName,eventLabel: "Home"})
             if(cmd){
               this.$router.push({ path: '/'+ this.currgd.id + ':' + cmd + url })
             } else {
@@ -161,7 +174,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
                   ? performance.now()
                   : new Date().getTime();
 
-              function scroll(timestamp) {
+              const scroll = (timestamp) => {
                 const timeElapsed = timestamp - startTime;
                 const progress = Math.min(timeElapsed / duration, 1);
                 element.scrollLeft = scrollPos + scrollPixels * progress;
@@ -222,6 +235,11 @@ import 'vue-loading-overlay/dist/vue-loading.css';
             } else {
               return true
             }
+          },
+          siteName() {
+            return window.gds.filter((item, index) => {
+              return index == this.$route.params.id;
+            })[0];
           },
         },
     }
