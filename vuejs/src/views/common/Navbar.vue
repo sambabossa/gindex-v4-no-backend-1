@@ -7,7 +7,7 @@
       <div class="navbar-brand">
         <div class="navbar-item nav-link">
           <h3 class="title has-text-netflix is-3" @click="homeroute">
-            {{ siteName }}
+            {{ currgd.name }}
           </h3>
         </div>
         <a
@@ -33,7 +33,7 @@
           <a
             class="navbar-item"
             v-for="(link, index) in quicklinks.slice(0,3)"
-            :title="link.displayname"
+            v-tooltip.bottom-start="link.displayname"
             v-bind:key="index"
             @click="gotoPage('/'+ link.link + '/')"
            >
@@ -41,6 +41,7 @@
           </a>
           <a
             class="navbar-item"
+            v-tooltip.bottom-start="'Go to Root'"
             title="All"
             @click="gotoPage('/')"
            >
@@ -80,6 +81,18 @@
             </div>
           </div>
           <a
+            class="navbar-item"
+            title="Logout"
+            v-tooltip.bottom-start="'Stop Music Player'"
+            @click="closeMusicPlayer()"
+            v-if="miniplayer"
+           >
+           <span class="icon">
+            <i class="fas fa-volume-mute"></i>
+          </span>
+          <span class="is-hidden-desktop">Stop Player</span>
+          </a>
+          <a
             :class="ismobile ? 'navbar-item' : 'navbar-item is-hidden'"
             @click.stop="$refs.viewMode.toggleMode"
           >
@@ -105,6 +118,13 @@ export default {
         return links.root == this.gdindex
       })[0].link;
     })
+    this.$bus.$on("music-toggled", () => {
+      if(this.$audio.player() == undefined){
+        this.miniplayer = false;
+      } else if(this.$audio.player() != undefined){
+        this.miniplayer = true;
+      }
+    })
     this.active = false;
     this.siteName = document.getElementsByTagName("title")[0].innerText;
     if (window.gds && window.gds.length > 0) {
@@ -128,6 +148,7 @@ export default {
       param: "",
       currgd: {},
       loading: false,
+      miniplayer: false,
       netflix_black: false,
       mouseover: false,
       fullpage: true,
@@ -184,11 +205,21 @@ export default {
         this.loading = false;
       }, 500)
     },
+    closeMusicPlayer(){
+      if(this.$audio.player() == undefined) return;
+      this.$audio.destroy();
+      this.$bus.$emit("music-toggled", "Music Toggled")
+    }
   },
   computed: {
     showSearch() {
 // Folder does not support searching
       return window.MODEL ? window.MODEL.root_type < 2 : true
+    },
+    siteTitle() {
+      return window.gds.filter((item, index) => {
+        return index == this.$route.params.id;
+      })[0];
     },
     ismobile() {
       var width = window.innerWidth > 0 ? window.innerWidth : screen.width;
